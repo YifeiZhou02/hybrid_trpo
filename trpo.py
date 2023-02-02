@@ -40,7 +40,8 @@ def linesearch(model,
         actual_improve = fval - newfval
         expected_improve = expected_improve_rate * stepfrac
         ratio = actual_improve / expected_improve
-        print("a/e/r", actual_improve.item(), expected_improve.item(), ratio.item())
+        print("a/e/r", actual_improve.item(),
+              expected_improve.item(), ratio.item())
 
         if ratio.item() > accept_ratio and actual_improve.item() > 0:
             print("fval after", newfval.item())
@@ -62,7 +63,8 @@ def trpo_step(model, get_loss, get_kl, max_kl, damping):
 
         kl_v = (flat_grad_kl * Variable(v)).sum()
         grads = torch.autograd.grad(kl_v, model.parameters())
-        flat_grad_grad_kl = torch.cat([grad.contiguous().view(-1) for grad in grads]).data
+        flat_grad_grad_kl = torch.cat(
+            [grad.contiguous().view(-1) for grad in grads]).data
 
         return flat_grad_grad_kl + v * damping
 
